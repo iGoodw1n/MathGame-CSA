@@ -1,50 +1,43 @@
-﻿using System;
-using System.Diagnostics;
+﻿namespace MathGame_CSA;
 
-namespace MathGame_CSA
+public class Puzzle
 {
-    public class Puzzle
+    int _firstOperand;
+    int _secondOperand;
+    MathOperation _operation;
+    public bool IsCorrect { get; private set; }
+
+    public Puzzle(Random random, MathOperation op)
     {
-        int _firstOperand;
-        int _secondOperand;
-        MathOperation _operation;
-        public bool Correct { get; private set; }
+        _operation = op == MathOperation.Random ? (MathOperation)random.Next((int)MathOperation.Random) : op;
+        _firstOperand = random.Next(1, 99);
+        _secondOperand = random.Next(1, 99);
 
-        public Puzzle(Random random, MathOperation op)
+        if (_operation == MathOperation.Division)
         {
-            _operation = op == MathOperation.Random ? (MathOperation)random.Next((int)MathOperation.Random) : op;
-            _firstOperand = random.Next(1, 99);
-            _secondOperand = random.Next(1, 99);
-
-            if (_operation == MathOperation.Division)
+            while (_firstOperand < _secondOperand || _firstOperand % _secondOperand != 0)
             {
-                while (_firstOperand < _secondOperand || _firstOperand % _secondOperand != 0)
-                {
-                    _firstOperand = random.Next(1, 99);
-                    _secondOperand = random.Next(1, 99);
-                }
+                _firstOperand = random.Next(1, 99);
+                _secondOperand = random.Next(1, 99);
             }
         }
+    }
 
-        public void Play()
+    public void Play()
+    {
+        Console.WriteLine($"\nSolve this puzzle:\n{_firstOperand} {_operation.ToOperatorString()} {_secondOperand}");
+        var input = Console.ReadLine();
+
+        if (int.TryParse(input, out var answer)
+            && answer == _operation.Calculate(_firstOperand, _secondOperand))
         {
-            var timer = Stopwatch.StartNew();
-            Console.WriteLine($"\nSolve this puzzle:\n{_firstOperand} {_operation.ToOperatorString()} {_secondOperand}");
-
-            var input = Console.ReadLine();
-            timer.Stop();
-
-            if (int.TryParse(input, out var answer)
-                && answer == _operation.Calculate(_firstOperand, _secondOperand))
-            {
-                Console.WriteLine("Correct!");
-                Correct = true;
-            }
-            else
-            {
-                Console.WriteLine($"Wrong.\nRight answer was: {_operation.Calculate(_firstOperand, _secondOperand)}");
-                Correct = false;
-            }
+            Console.WriteLine("Correct!");
+            IsCorrect = true;
+        }
+        else
+        {
+            Console.WriteLine($"Wrong.\nRight answer was: {_operation.Calculate(_firstOperand, _secondOperand)}");
+            IsCorrect = false;
         }
     }
 }

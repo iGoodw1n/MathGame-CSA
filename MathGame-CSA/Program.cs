@@ -1,11 +1,10 @@
-﻿namespace MathGame_CSA
+﻿namespace MathGame_CSA;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Game game = new Game();
-            game.Play();
-        }
+        Game game = new Game();
+        game.Play();
     }
 }

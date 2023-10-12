@@ -1,11 +1,10 @@
-﻿namespace MathGame_CSA
+﻿namespace MathGame_CSA;
+
+public enum MathOperation
 {
-    public enum MathOperation
-    {
-        Addition,
-        Subtraction,
-        Multiplication,
-        Division,
-        Random
-    }
+    Addition,
+    Subtraction,
+    Multiplication,
+    Division,
+    Random
 }
